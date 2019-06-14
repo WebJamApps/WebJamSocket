@@ -1,2 +1,2 @@
 # WebJamSocket
-backend repo that rujns node, express, socketcluster
+backend repo that runs node, express, socketcluster
