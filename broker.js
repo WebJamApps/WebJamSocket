@@ -1,9 +1,10 @@
-var SCBroker = require('socketcluster/scbroker');
-var scClusterBrokerClient = require('scc-broker-client');
+const SCBroker = require('socketcluster/scbroker');
+const scClusterBrokerClient = require('scc-broker-client');
+const debug = require('debug')('WebJamSocket:broker');
 
 class Broker extends SCBroker {
   run() {
-    console.log('   >> Broker PID:', process.pid);
+    debug('   >> Broker PID:', process.pid);
 
     // This is defined in server.js (taken from environment variable SC_CLUSTER_STATE_SERVER_HOST).
     // If this property is defined, the broker will try to attach itself to the SC cluster for
@@ -20,10 +21,10 @@ class Broker extends SCBroker {
         authKey: this.options.clusterAuthKey,
         stateServerConnectTimeout: this.options.clusterStateServerConnectTimeout,
         stateServerAckTimeout: this.options.clusterStateServerAckTimeout,
-        stateServerReconnectRandomness: this.options.clusterStateServerReconnectRandomness
+        stateServerReconnectRandomness: this.options.clusterStateServerReconnectRandomness,
       });
     }
   }
 }
 
-new Broker();
+module.exports = new Broker();
