@@ -5,11 +5,13 @@ const path = require('path');
 const morgan = require('morgan');
 const healthChecker = require('sc-framework-health-check');
 const debug = require('debug')('WebJamSocket:worker');
+const controller = require('./model/book/book-controller');
 
 class Worker extends SCWorker {
   run() {
     debug('   >> Worker PID:', process.pid);
     const { environment } = this.options;
+    require('./model/db'); // eslint-disable-line global-require
     const app = express();
     const { httpServer } = this;
     const { scServer } = this;
@@ -27,11 +29,13 @@ class Worker extends SCWorker {
     httpServer.on('request', app);
 
     let count = 0;
-
+    debug('worker');
+    controller.makeOneBook({ title: 'first book', type: 'test' });
     /*
       In here we handle our incoming realtime connections and listen for events.
     */
-    scServer.on('connection', (socket) => {
+    scServer.on('connection', async (socket) => {
+      debug('server connection');
       // Some sample logic to show how to handle client events,
       // replace this with your own logic
 
