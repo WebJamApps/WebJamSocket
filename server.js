@@ -7,7 +7,7 @@
   each one has a specific meaning within the SC ecosystem.
 */
 
-require('dotenv');
+require('dotenv').config();
 const debug = require('debug')('WebJamSocket:server');
 const path = require('path');
 const argv = require('minimist')(process.argv.slice(2));
