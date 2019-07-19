@@ -34,14 +34,14 @@ class Worker extends SCWorker {
     /*
       In here we handle our incoming realtime connections and listen for events.
     */
-    scServer.on('connection', async (socket) => {
-      debug('server connection');
+    scServer.on('connection', (socket) => {
+      debug('client connection');
       // Some sample logic to show how to handle client events,
       // replace this with your own logic
 
       socket.on('sampleClientEvent', (data) => {
         count += 1;
-        debug('Handled sampleClientEvent', data);
+        debug(`Handled sampleClientEvent: ${data}`);
         scServer.exchange.publish('sample', count);
       });
 
@@ -52,6 +52,7 @@ class Worker extends SCWorker {
       }, 1000);
 
       socket.on('disconnect', () => {
+        count -= 1;
         clearInterval(interval);
       });
     });
