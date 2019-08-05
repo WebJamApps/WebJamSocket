@@ -46,6 +46,7 @@ const options = {
   // If using nodemon, set this to true, and make sure that environment is 'dev'.
   killMasterOnSignal: true,
   environment: process.env.ENV || 'dev',
+  protocol: process.env.SOCKETCLUSTER_PROTOCOL,
 };
 
 const bootTimeout = Number(process.env.SOCKETCLUSTER_CONTROLLER_BOOT_TIMEOUT) || 10000;
