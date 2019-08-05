@@ -8,6 +8,7 @@
 */
 
 require('dotenv').config();
+const fs = require('fs');
 const debug = require('debug')('WebJamSocket:server');
 const path = require('path');
 const argv = require('minimist')(process.argv.slice(2));
@@ -47,6 +48,10 @@ const options = {
   killMasterOnSignal: true,
   environment: process.env.ENV || 'dev',
   protocol: process.env.SOCKETCLUSTER_PROTOCOL,
+  protocolOptions: process.env.NODE_ENV === 'production' ? {
+    key: fs.readFileSync(`${__dirname}/privkey.pem`), // eslint-disable-line security/detect-non-literal-fs-filename
+    cert: fs.readFileSync(`${__dirname}/fullchain.pem`), // eslint-disable-line security/detect-non-literal-fs-filename
+  } : null,
 };
 
 const bootTimeout = Number(process.env.SOCKETCLUSTER_CONTROLLER_BOOT_TIMEOUT) || 10000;
