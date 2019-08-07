@@ -48,7 +48,7 @@ const options = {
   killMasterOnSignal: true,
   environment: process.env.ENV || 'dev',
   protocol: process.env.SOCKETCLUSTER_PROTOCOL,
-  protocolOptions: process.env.NODE_ENV === 'production' ? {
+  protocolOptions: process.env.SOCKETCLUSTER_PROTOCOL === 'https' ? {
     key: fs.readFileSync(`${__dirname}/privkey.pem`), // eslint-disable-line security/detect-non-literal-fs-filename
     cert: fs.readFileSync(`${__dirname}/fullchain.pem`), // eslint-disable-line security/detect-non-literal-fs-filename
   } : null,
@@ -72,6 +72,7 @@ const start = () => {
 
   socketCluster.on(socketCluster.EVENT_WORKER_CLUSTER_START, (workerClusterInfo) => {
     debug('   >> WorkerCluster PID:', workerClusterInfo.pid);
+    debug('   >> protocol:', options.protocol);
   });
 
   if (socketCluster.options.environment === 'dev') {
