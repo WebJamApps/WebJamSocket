@@ -48,7 +48,7 @@ const options = {
   // If using nodemon, set this to true, and make sure that environment is 'dev'.
   killMasterOnSignal: true,
   environment: process.env.ENV || 'dev',
-  protocol: process.env.SOCKETCLUSTER_PROTOCOL,
+  // protocol: process.env.SOCKETCLUSTER_PROTOCOL || 'http',
   // protocolOptions: process.env.SOCKETCLUSTER_PROTOCOL === 'https' ? {
   //   key: fs.readFileSync(`${__dirname}/privkey.pem`), // eslint-disable-line security/detect-non-literal-fs-filename
   //   cert: fs.readFileSync(`${__dirname}/fullchain.pem`), // eslint-disable-line security/detect-non-literal-fs-filename
