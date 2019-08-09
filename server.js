@@ -28,7 +28,7 @@ const options = {
   port: Number(argv.p) || Number(process.env.PORT) || 8000,
   // You can switch to 'sc-uws' for improved performance.
   wsEngine: process.env.SOCKETCLUSTER_WS_ENGINE || 'ws',
-  host: process.env.SOCKETCLUSTER_HOST || '127.0.0.1',
+  // host: process.env.SOCKETCLUSTER_HOST || '127.0.0.1',
   appName: argv.n || process.env.SOCKETCLUSTER_APP_NAME || null,
   workerController: workerControllerPath || path.join(__dirname, 'worker.js'),
   brokerController: brokerControllerPath || path.join(__dirname, 'broker.js'),
@@ -48,7 +48,7 @@ const options = {
   // If using nodemon, set this to true, and make sure that environment is 'dev'.
   killMasterOnSignal: true,
   environment: process.env.ENV || 'dev',
-  // protocol: process.env.SOCKETCLUSTER_PROTOCOL || 'http',
+  protocol: process.env.SOCKETCLUSTER_PROTOCOL || 'http',
   // protocolOptions: process.env.SOCKETCLUSTER_PROTOCOL === 'https' ? {
   //   key: fs.readFileSync(`${__dirname}/privkey.pem`), // eslint-disable-line security/detect-non-literal-fs-filename
   //   cert: fs.readFileSync(`${__dirname}/fullchain.pem`), // eslint-disable-line security/detect-non-literal-fs-filename
