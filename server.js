@@ -25,7 +25,7 @@ const workerClusterControllerPath = argv.wcc || process.env.SOCKETCLUSTER_WORKER
 const options = {
   workers: Number(argv.w) || Number(process.env.SOCKETCLUSTER_WORKERS) || 1,
   brokers: Number(argv.b) || Number(process.env.SOCKETCLUSTER_BROKERS) || 1,
-  port: Number(argv.p) || Number(process.env.PORT) || 8000,
+  port: Number(argv.p) || Number(process.env.SOCKETCLUSTER_PORT) || 8000,
   // You can switch to 'sc-uws' for improved performance.
   wsEngine: process.env.SOCKETCLUSTER_WS_ENGINE || 'ws',
   host: process.env.SOCKETCLUSTER_HOST || '127.0.0.1',
