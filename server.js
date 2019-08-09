@@ -28,6 +28,7 @@ const options = {
   port: Number(argv.p) || Number(process.env.PORT) || 8000,
   // You can switch to 'sc-uws' for improved performance.
   wsEngine: process.env.SOCKETCLUSTER_WS_ENGINE || 'ws',
+  host: process.env.SOCKETCLUSTER_HOST || '127.0.0.1',
   appName: argv.n || process.env.SOCKETCLUSTER_APP_NAME || null,
   workerController: workerControllerPath || path.join(__dirname, 'worker.js'),
   brokerController: brokerControllerPath || path.join(__dirname, 'broker.js'),
