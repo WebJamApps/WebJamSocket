@@ -1,19 +1,25 @@
-var SCWorker = require('socketcluster/scworker');
-var express = require('express');
-var serveStatic = require('serve-static');
-var path = require('path');
-var morgan = require('morgan');
-var healthChecker = require('sc-framework-health-check');
+require('dotenv').config();
+
+let SCWorker;
+/* istanbul ignore if */
+if (process.env.NODE_ENV !== 'test') SCWorker = require('socketcluster/scworker'); // eslint-disable-line global-require
+else SCWorker = require('./lib/scworkerStub'); // eslint-disable-line global-require
+const express = require('express');
+const serveStatic = require('serve-static');
+const path = require('path');
+const morgan = require('morgan');
+const healthChecker = require('sc-framework-health-check');
+const debug = require('debug')('WebJamSocket:worker');
+const controller = require('./model/book/book-controller');
 
 class Worker extends SCWorker {
   run() {
-    console.log('   >> Worker PID:', process.pid);
-    var environment = this.options.environment;
-
-    var app = express();
-
-    var httpServer = this.httpServer;
-    var scServer = this.scServer;
+    debug('   >> Worker PID:', process.pid);
+    const { environment } = this.options;
+    require('./model/db'); // eslint-disable-line global-require
+    const app = express();
+    const { httpServer } = this;
+    const { scServer } = this;
 
     if (environment === 'dev') {
       // Log every HTTP request. See https://github.com/expressjs/morgan for other
@@ -27,33 +33,37 @@ class Worker extends SCWorker {
 
     httpServer.on('request', app);
 
-    var count = 0;
-
+    let count = 0;
+    debug('worker');
+    controller.makeOneBook({ title: 'first book', type: 'test' });
     /*
       In here we handle our incoming realtime connections and listen for events.
     */
-    scServer.on('connection', function (socket) {
-
+    scServer.on('connection', (socket) => {
+      debug('client connection');
       // Some sample logic to show how to handle client events,
       // replace this with your own logic
 
-      socket.on('sampleClientEvent', function (data) {
-        count++;
-        console.log('Handled sampleClientEvent', data);
+      socket.on('sampleClientEvent', (data) => {
+        count += 1;
+        debug(`Handled sampleClientEvent: ${data}`);
         scServer.exchange.publish('sample', count);
       });
 
-      var interval = setInterval(function () {
+      const interval = setInterval(() => {
         socket.emit('random', {
-          number: Math.floor(Math.random() * 5)
+          number: Math.floor(Math.random() * 5),
         });
       }, 1000);
 
-      socket.on('disconnect', function () {
+      socket.on('disconnect', () => {
+        count -= 1;
         clearInterval(interval);
+        scServer.exchange.publish('sample', count);
       });
     });
+    return Promise.resolve(true);
   }
 }
 
-new Worker();
+module.exports = new Worker();
