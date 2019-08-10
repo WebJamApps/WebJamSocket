@@ -6,7 +6,6 @@ A SocketCluster server that runs in Heroku and connects to MongoDB Atlas. It pro
 -   <https://ourhandsandfeet.working>
 -   <https://joshandmariamusic.com>
 
-backend repo that runs node, express, socketcluster
 [![CircleCI](https://circleci.com/gh/WebJamApps/WebJamSocket.svg?style=svg)](https://circleci.com/gh/WebJamApps/WebJamSocket)
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg)](https://github.com/facebook/jest)
 [![jest](https://jestjs.io/img/jest-badge.svg)](https://github.com/facebook/jest)
