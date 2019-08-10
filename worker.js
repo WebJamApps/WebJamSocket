@@ -1,4 +1,9 @@
-const SCWorker = require('socketcluster/scworker');
+require('dotenv').config();
+
+let SCWorker;
+/* istanbul ignore if */
+if (process.env.NODE_ENV !== 'test') SCWorker = require('socketcluster/scworker'); // eslint-disable-line global-require
+else SCWorker = require('./lib/scworkerStub'); // eslint-disable-line global-require
 const express = require('express');
 const serveStatic = require('serve-static');
 const path = require('path');
@@ -56,6 +61,7 @@ class Worker extends SCWorker {
         clearInterval(interval);
       });
     });
+    return Promise.resolve(true);
   }
 }
 
