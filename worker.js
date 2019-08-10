@@ -59,6 +59,7 @@ class Worker extends SCWorker {
       socket.on('disconnect', () => {
         count -= 1;
         clearInterval(interval);
+        scServer.exchange.publish('sample', count);
       });
     });
     return Promise.resolve(true);
