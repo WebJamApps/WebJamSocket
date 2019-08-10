@@ -52,10 +52,14 @@
   ],
   "readmeFilename": "README.md",
   "scripts": {
+    "test": "eslint . && rm -rf coverage && npm run test:jest",
+    "cc": "codeclimate analyze -f html > codeclimate.html",
     "start": "node server.js",
     "start:debug": "DEBUG=WebJamSocket:* nodemon server.js",
     "start:docker": "node dockerwait.js && node ${SOCKETCLUSTER_MASTER_CONTROLLER:-server.js}",
     "test:lint": "eslint . --fix",
+    "test:local": "eslint . --fix && yarn test:jest && yarn cc",
+    "test:jest": "jest --no-cache --config jest.config.json --notify",
     "installglobals": "yarn config set registry https://registry.yarnpkg.com -g",
     "cleaninstall": "rm -rf yarn.lock && rm -rf node_modules && yarn cache clean && yarn installglobals && yarn install"
   }

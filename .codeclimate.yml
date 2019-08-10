@@ -38,5 +38,7 @@ ratings:
   - "**.js"
   - "**.jsx"
 exclude_patterns:
-- "test/"
+- "tests/"
 - "**/node_modules/"
+- "coverage/"
+- "public/"
