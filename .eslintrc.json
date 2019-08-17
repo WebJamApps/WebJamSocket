@@ -1,6 +1,6 @@
 {
-  "plugins": ["node", "security", "jest"],
-  "extends": ["plugin:node/recommended", "plugin:security/recommended", "airbnb", "plugin:jest/recommended"],
+  "plugins": ["security", "jest"],
+  "extends": ["plugin:security/recommended", "airbnb", "plugin:jest/recommended", "plugin:node/recommended"],
   "rules": {
     "no-underscore-dangle": 0,
     "node/no-unsupported-features/es-syntax": 0,
