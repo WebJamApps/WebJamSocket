@@ -20,5 +20,6 @@ const errorMessage = `Failed to locate the master controller file at path ${mast
 waitForFile(masterControllerPath, bootCheckInterval, bootStartTime, bootTimeout, errorMessage)
   .catch((err) => {
     console.error(`> Boot error: ${err.message}`);// eslint-disable-line no-console
-    process.exit(1);
+    // process.exit(1);
+    throw err;
   });

@@ -106,6 +106,6 @@ const filesReadyPromises = [
 Promise.all(filesReadyPromises)
   .then(() => { start(); })
   .catch((err) => {
-    debug(err.stack);
-    process.exit(1);
+    debug(err);
+    throw err;
   });
