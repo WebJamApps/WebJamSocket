@@ -2,8 +2,6 @@
 
 A SocketCluster server that runs in Heroku and connects to MongoDB Atlas. It provide real-time events for the following apps:
 
--   <https://web-jam.comm>
--   <https://ourhandsandfeet.working>
 -   <https://joshandmariamusic.com>
 
 [![CircleCI](https://circleci.com/gh/WebJamApps/WebJamSocket.svg?style=svg)](https://circleci.com/gh/WebJamApps/WebJamSocket)
