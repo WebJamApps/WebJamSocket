@@ -8,12 +8,16 @@ class BookController extends Controller {
       .then((collection) => res.status(200).json(collection));
   }
 
+  async deleteAllBooks() {
+    try { await this.model.deleteMany({}); } catch (e) { debug(e.message); throw e; }
+    return Promise.resolve(true);
+  }
+
   async makeOneBook(body) {
     let result;
     try { result = await this.model.create(body); } catch (e) {
-      debug(e.message);
-      throw e;
-    }debug(result);
+      debug(e.message); throw e;
+    } debug(result);
   }
 }
 

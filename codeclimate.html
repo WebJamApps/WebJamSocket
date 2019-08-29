@@ -572,10 +572,10 @@
             <li
               data-categories="complexity"
               data-engine="structure">
-              <h2>Function `run` has 34 lines of code (exceeds 30 allowed). Consider refactoring.</h2>
+              <h2>Function `run` has 38 lines of code (exceeds 30 allowed). Consider refactoring.</h2>
               <div class="code">
                 <pre class="line-numbers language-javascript"
-                     data-line="16-66"
+                     data-line="16-71"
                      data-start="14"
                      data-line-offset="13"><code>
 class Worker extends SCWorker {
@@ -586,7 +586,7 @@ class Worker extends SCWorker {
     const app = express();
     const { httpServer } = this;
     const { scServer } = this;
-
+    /* istanbul ignore if */
     if (environment === &#39;dev&#39;) {
       // Log every HTTP request. See https://github.com/expressjs/morgan for other
       // available formats.
