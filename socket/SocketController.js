@@ -42,6 +42,11 @@ class SocketController {
         if (process.env.NODE_ENV !== 'test') clearInterval(interval);
         this.scServer.exchange.publish('sample', this.count);
       });
+      socket.on('getTours', async () => {
+        let allTours;
+        try { allTours = await this.tourController.getAll(); } catch (e) { debug(e.message); throw e; }
+        socket.emit('allTours', allTours);
+      });
     });
     return Promise.resolve(true);
   }
