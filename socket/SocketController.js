@@ -1,9 +1,13 @@
 const debug = require('debug')('WebJamSocket:SocketController');
 const bookController = require('../model/book/book-controller');
+const tourController = require('../model/tour/tour-controller');
+const tourData = require('../tour.json');
 
+const { tour } = tourData;
 class SocketController {
   constructor(scServer) {
     this.bookController = bookController;
+    this.tourController = tourController;
     this.count = 0;
     this.scServer = scServer;
   }
@@ -11,8 +15,12 @@ class SocketController {
   routing() {
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
-      this.bookController.deleteAllBooks().then(() => {
-        this.bookController.makeOneBook({ title: 'first book', type: 'test' });
+      this.bookController.deleteAllDocs().then(async () => {
+        debug('deleted');
+        await this.bookController.createDocs({ title: 'first book', type: 'test' });
+      });
+      this.tourController.deleteAllDocs().then(() => {
+        this.tourController.createDocs(tour);
       });
     }
     // In here we handle our incoming realtime connections and listen for events.
