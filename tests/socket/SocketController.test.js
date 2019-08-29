@@ -16,7 +16,8 @@ describe('SocketController', () => {
   };
   it('runs routing', async () => {
     const socketController = new SocketController(sServer);
-    socketController.bookController.deleteAllBooks = jest.fn(() => Promise.resolve(true));
+    socketController.bookController.deleteAllDocs = jest.fn(() => Promise.resolve(true));
+    socketController.tourController.deleteAllDocs = jest.fn(() => Promise.resolve(true));
     const result = await socketController.routing();
     jest.advanceTimersByTime(2000);
     expect(result).toBe(true);
