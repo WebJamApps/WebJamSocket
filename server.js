@@ -25,7 +25,7 @@ const workerClusterControllerPath = argv.wcc || process.env.SOCKETCLUSTER_WORKER
 const options = {
   workers: Number(argv.w) || Number(process.env.SOCKETCLUSTER_WORKERS) || 1,
   brokers: Number(argv.b) || Number(process.env.SOCKETCLUSTER_BROKERS) || 1,
-  port: Number(argv.p) || Number(process.env.PORT) || 8000,
+  port: Number(argv.p) || Number(process.env.PORT),
   // You can switch to 'sc-uws' for improved performance.
   wsEngine: process.env.SOCKETCLUSTER_WS_ENGINE || 'ws',
   // host: process.env.SOCKETCLUSTER_HOST || '127.0.0.1',
@@ -46,9 +46,9 @@ const options = {
   clusterStateServerReconnectRandomness: Number(process.env.SCC_STATE_SERVER_RECONNECT_RANDOMNESS) || null,
   crashWorkerOnError: argv['auto-reboot'] !== false,
   // If using nodemon, set this to true, and make sure that environment is 'dev'.
-  killMasterOnSignal: true,
-  environment: process.env.ENV || 'dev',
-  protocol: process.env.SOCKETCLUSTER_PROTOCOL || 'http',
+  killMasterOnSignal: process.env.NODE_ENV === 'development',
+  environment: process.env.NODE_ENV !== 'production' ? 'dev' : /* istanbul ignore next */ 'prod',
+  protocol: process.env.SOCKETCLUSTER_PROTOCOL,
   // protocolOptions: process.env.SOCKETCLUSTER_PROTOCOL === 'https' ? {
   //   key: fs.readFileSync(`${__dirname}/privkey.pem`), // eslint-disable-line security/detect-non-literal-fs-filename
   //   cert: fs.readFileSync(`${__dirname}/fullchain.pem`), // eslint-disable-line security/detect-non-literal-fs-filename
@@ -56,27 +56,27 @@ const options = {
 };
 
 const bootTimeout = Number(process.env.SOCKETCLUSTER_CONTROLLER_BOOT_TIMEOUT) || 10000;
-let SOCKETCLUSTER_OPTIONS;
-
-if (process.env.SOCKETCLUSTER_OPTIONS) {
-  SOCKETCLUSTER_OPTIONS = JSON.parse(process.env.SOCKETCLUSTER_OPTIONS);
-}
-
-for (const i in SOCKETCLUSTER_OPTIONS) { // eslint-disable-line no-restricted-syntax
-  if (SOCKETCLUSTER_OPTIONS.hasOwnProperty(i)) { // eslint-disable-line no-prototype-builtins
-    options[i] = SOCKETCLUSTER_OPTIONS[i];// eslint-disable-line security/detect-object-injection
-  }
-}
+// let SOCKETCLUSTER_OPTIONS;
+//
+// if (process.env.SOCKETCLUSTER_OPTIONS) {
+//   SOCKETCLUSTER_OPTIONS = JSON.parse(process.env.SOCKETCLUSTER_OPTIONS);
+// }
+//
+// for (const i in SOCKETCLUSTER_OPTIONS) { // eslint-disable-line no-restricted-syntax
+//   if (SOCKETCLUSTER_OPTIONS.hasOwnProperty(i)) { // eslint-disable-line no-prototype-builtins
+//     options[i] = SOCKETCLUSTER_OPTIONS[i];// eslint-disable-line security/detect-object-injection
+//   }
+// }
 
 const start = () => {
   const socketCluster = new SocketCluster(options);
-
+  /* istanbul ignore next */
   socketCluster.on(socketCluster.EVENT_WORKER_CLUSTER_START, (workerClusterInfo) => {
     debug('   >> WorkerCluster PID:', workerClusterInfo.pid);
     debug('   >> protocol:', options.protocol);
   });
-
-  if (socketCluster.options.environment === 'dev') {
+  /* istanbul ignore if */
+  if (process.env.NODE_ENV === 'development') {
     // This will cause SC workers to reboot when code changes anywhere in the app directory.
     // The second options argument here is passed directly to chokidar.
     // See https://github.com/paulmillr/chokidar#api for details.
@@ -105,7 +105,7 @@ const filesReadyPromises = [
 ];
 Promise.all(filesReadyPromises)
   .then(() => { start(); })
-  .catch((err) => {
+  .catch(/* istanbul ignore next */(err) => {
     debug(err);
     throw err;
   });

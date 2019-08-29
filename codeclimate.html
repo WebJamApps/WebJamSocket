@@ -8,7 +8,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-clike.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-javascript.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/plugins/line-numbers/prism-line-numbers.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/plugins/line-highlight/prism-line-highlight.min.css" />
@@ -168,18 +167,11 @@
       });
     </script>
     <style>
-      .filter-category-complexity > li,
-      .filter-engine-structure > li,
       .filter-none > li {
         display: none;
       }
 
-      .filter-category-all.filter-engine-structure > li[data-engine="structure"],
-      .filter-category-complexity.filter-engine-all > li[data-categories~="complexity"],
       .filter-category-all.filter-engine-all > li[data-categories~="all"][data-engine="all"],
-      .filter-category-all.filter-engine-structure > li[data-categories~="all"][data-engine="structure"],
-      .filter-category-complexity.filter-engine-all > li[data-categories~="complexity"][data-engine="all"],
-      .filter-category-complexity.filter-engine-structure > li[data-categories~="complexity"][data-engine="structure"],
       .filter-category-all.filter-engine-all > li {
         display: block;
       }
@@ -556,51 +548,9 @@
       </nav>
       <div id="main-container">
 
-          <div class="issue-filters">
-            <label for="category-filter">Category</label>
-            <select id="category-filter">
-              <option value="">All Categories</option>
-              <option value="complexity">Complexity</option>
-            </select>
-            <label for="engine-filter">Engine</label>
-            <select id="engine-filter">
-              <option value="">All Engines</option>
-              <option value="structure">structure</option>
-            </select>
+          <div id="no-issues-message">
+            No issues have been found!
           </div>
-          <ul id="smells">
-            <li
-              data-categories="complexity"
-              data-engine="structure">
-              <h2>Function `run` has 34 lines of code (exceeds 30 allowed). Consider refactoring.</h2>
-              <div class="code">
-                <pre class="line-numbers language-javascript"
-                     data-line="16-66"
-                     data-start="14"
-                     data-line-offset="13"><code>
-class Worker extends SCWorker {
-  run() {
-    debug(&#39;   &gt;&gt; Worker PID:&#39;, process.pid);
-    const { environment } = this.options;
-    require(&#39;./model/db&#39;); // eslint-disable-line global-require
-    const app = express();
-    const { httpServer } = this;
-    const { scServer } = this;
-
-    if (environment === &#39;dev&#39;) {
-      // Log every HTTP request. See https://github.com/expressjs/morgan for other
-      // available formats.
-      app.use(morgan(&#39;dev&#39;));
-    }
-</code></pre>
-              </div>
-              <div class="found-in">
-                Found in worker.js by
-                <a href="https://docs.codeclimate.com/docs/structure">structure</a>
-              </div>
-            </li>
-          </ul>
-          <div id="filtered-out-message">All issues have been filtered out</div>
       </div>
     </div>
   </div>
