@@ -23,7 +23,6 @@ class SocketController {
     }
     // In here we handle our incoming realtime connections and listen for events.
     this.scServer.on('connection', (socket) => {
-      debug('client connection');
       socket.on('sampleClientEvent', (data) => {
         this.count += 1;
         debug(`Handled sampleClientEvent: ${data}`);
