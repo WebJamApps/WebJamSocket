@@ -1,20 +1,16 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 
-// let mongoUri = process.env.MONGO_HOST;
-// /* istanbul ignore else */
-// if (mongoUri === null || mongoUri === undefined) {
-//   mongoUri = 'mongodb://valert:valert@ds233970.mlab.com:33970/test-valert';
-// }
-// use es6 default promise library in mongoose
-mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise;// use es6 default promise library in mongoose
 mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
 const mongoOptions = { keepAlive: 1, useNewUrlParser: true, autoIndex: true };
 /* istanbul ignore if */
 if (process.env.NODE_ENV === 'production') mongoOptions.autoIndex = false;
-mongoose.connect(process.env.MONGO_DB_URI, mongoOptions);
-// its not worth refactoring this into a class just to get this error for a unit test
+let uri = process.env.MONGO_DB_URI;
+/* istanbul ignore else */
+if (process.env.NODE_ENV === 'test') uri = process.env.TEST_MONGO;
+mongoose.connect(uri, mongoOptions);
 /* istanbul ignore next */
 mongoose.connection.on('error', () => { throw new Error(`unable to connect to database: ${process.env.MONGO_DB_URI}`); });
 
