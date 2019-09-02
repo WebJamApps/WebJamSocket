@@ -10,7 +10,8 @@ const path = require('path');
 const morgan = require('morgan');
 const healthChecker = require('sc-framework-health-check');
 const debug = require('debug')('WebJamSocket:worker');
-const controller = require('./model/book/book-controller');
+const SocketController = require('./socket/SocketController');
+// const controller = require('./model/book/book-controller');
 
 class Worker extends SCWorker {
   run() {
@@ -20,7 +21,7 @@ class Worker extends SCWorker {
     const app = express();
     const { httpServer } = this;
     const { scServer } = this;
-
+    /* istanbul ignore if */
     if (environment === 'dev') {
       // Log every HTTP request. See https://github.com/expressjs/morgan for other
       // available formats.
@@ -33,35 +34,42 @@ class Worker extends SCWorker {
 
     httpServer.on('request', app);
 
-    let count = 0;
+    // const count = 0;
     debug('worker');
-    controller.makeOneBook({ title: 'first book', type: 'test' });
-    /*
-      In here we handle our incoming realtime connections and listen for events.
-    */
-    scServer.on('connection', (socket) => {
-      debug('client connection');
-      // Some sample logic to show how to handle client events,
-      // replace this with your own logic
-
-      socket.on('sampleClientEvent', (data) => {
-        count += 1;
-        debug(`Handled sampleClientEvent: ${data}`);
-        scServer.exchange.publish('sample', count);
-      });
-
-      const interval = setInterval(() => {
-        socket.emit('random', {
-          number: Math.floor(Math.random() * 5),
-        });
-      }, 1000);
-
-      socket.on('disconnect', () => {
-        count -= 1;
-        clearInterval(interval);
-        scServer.exchange.publish('sample', count);
-      });
-    });
+    const socketController = new SocketController(scServer);
+    socketController.routing();
+    /* istanbul ignore else */
+    // if (process.env.NODE_ENV !== 'production') {
+    //   controller.deleteAllBooks().then(() => {
+    //     controller.makeOneBook({ title: 'first book', type: 'test' });
+    //   });
+    // }
+    // /*
+    //   In here we handle our incoming realtime connections and listen for events.
+    // */
+    // scServer.on('connection', (socket) => {
+    //   debug('client connection');
+    //   // Some sample logic to show how to handle client events,
+    //   // replace this with your own logic
+    //
+    //   socket.on('sampleClientEvent', (data) => {
+    //     count += 1;
+    //     debug(`Handled sampleClientEvent: ${data}`);
+    //     scServer.exchange.publish('sample', count);
+    //   });
+    //
+    //   const interval = setInterval(() => {
+    //     socket.emit('random', {
+    //       number: Math.floor(Math.random() * 5),
+    //     });
+    //   }, 1000);
+    //
+    //   socket.on('disconnect', () => {
+    //     count -= 1;
+    //     clearInterval(interval);
+    //     scServer.exchange.publish('sample', count);
+    //   });
+    // });
     return Promise.resolve(true);
   }
 }

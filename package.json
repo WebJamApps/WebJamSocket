@@ -1,10 +1,10 @@
 {
   "name": "WebJamSocket",
   "description": "A SocketCluster app",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "engines": {
-    "node": ">=12.8.1"
+    "node": ">=12.9.0"
   },
   "contributors": [{
     "name": "Jonathan Gros-Dubois",
