@@ -24,12 +24,13 @@ class SocketController {
     // In here we handle our incoming realtime connections and listen for events.
     this.scServer.on('connection', (socket) => {
       socket.on('newTour', async (data) => {
-        debug(data);
+        // debug(data);
         let newTour;
         try { newTour = await this.tourController.createDocs(data.tour); } catch (e) {
           debug(e.message); socket.emit('error', `${e.message}`); return Promise.reject(e);
         }
         debug(newTour);
+        this.scServer.exchange.publish('tourCreated', newTour);
         return Promise.resolve(newTour);
       });
       socket.on('sampleClientEvent', (data) => {
