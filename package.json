@@ -4,7 +4,7 @@
   "version": "1.0.3",
   "license": "MIT",
   "engines": {
-    "node": ">=12.9.0"
+    "node": ">=12.10.0"
   },
   "contributors": [{
     "name": "Jonathan Gros-Dubois",
