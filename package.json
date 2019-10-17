@@ -19,7 +19,7 @@
     "dotenv": "latest",
     "express": "latest",
     "minimist": "latest",
-    "mongoose": "latest",
+    "mongoose": "5.7.5",
     "morgan": "latest",
     "sc-errors": "latest",
     "sc-framework-health-check": "latest",
