@@ -8,6 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-clike.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/components/prism-javascript.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/plugins/line-numbers/prism-line-numbers.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/plugins/line-highlight/prism-line-highlight.min.css" />
@@ -167,11 +168,18 @@
       });
     </script>
     <style>
+      .filter-category-complexity > li,
+      .filter-engine-structure > li,
       .filter-none > li {
         display: none;
       }
 
+      .filter-category-all.filter-engine-structure > li[data-engine="structure"],
+      .filter-category-complexity.filter-engine-all > li[data-categories~="complexity"],
       .filter-category-all.filter-engine-all > li[data-categories~="all"][data-engine="all"],
+      .filter-category-all.filter-engine-structure > li[data-categories~="all"][data-engine="structure"],
+      .filter-category-complexity.filter-engine-all > li[data-categories~="complexity"][data-engine="all"],
+      .filter-category-complexity.filter-engine-structure > li[data-categories~="complexity"][data-engine="structure"],
       .filter-category-all.filter-engine-all > li {
         display: block;
       }
@@ -548,9 +556,51 @@
       </nav>
       <div id="main-container">
 
-          <div id="no-issues-message">
-            No issues have been found!
+          <div class="issue-filters">
+            <label for="category-filter">Category</label>
+            <select id="category-filter">
+              <option value="">All Categories</option>
+              <option value="complexity">Complexity</option>
+            </select>
+            <label for="engine-filter">Engine</label>
+            <select id="engine-filter">
+              <option value="">All Engines</option>
+              <option value="structure">structure</option>
+            </select>
           </div>
+          <ul id="smells">
+            <li
+              data-categories="complexity"
+              data-engine="structure">
+              <h2>Function `routing` has 39 lines of code (exceeds 30 allowed). Consider refactoring.</h2>
+              <div class="code">
+                <pre class="line-numbers language-javascript"
+                     data-line="15-59"
+                     data-start="13"
+                     data-line-offset="12"><code>  }
+
+  routing() {
+    /* istanbul ignore else */
+    if (process.env.NODE_ENV !== &#39;production&#39;) {
+      this.bookController.deleteAllDocs().then(async () =&gt; {
+        debug(&#39;deleted&#39;);
+        await this.bookController.createDocs({ title: &#39;first book&#39;, type: &#39;test&#39; });
+      });
+      this.tourController.deleteAllDocs().then(() =&gt; { this.tourController.createDocs(tour); });
+    }
+    // In here we handle our incoming realtime connections and listen for events.
+    this.scServer.on(&#39;connection&#39;, (socket) =&gt; {
+      socket.on(&#39;newTour&#39;, async (data) =&gt; {
+        // debug(data);
+</code></pre>
+              </div>
+              <div class="found-in">
+                Found in socket/SocketController.js by
+                <a href="https://docs.codeclimate.com/docs/structure">structure</a>
+              </div>
+            </li>
+          </ul>
+          <div id="filtered-out-message">All issues have been filtered out</div>
       </div>
     </div>
   </div>
