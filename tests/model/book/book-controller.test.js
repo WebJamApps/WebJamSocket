@@ -8,9 +8,7 @@ describe('BookController', () => {
   });
   it('throws error on deletes all books', async () => {
     controller.model.deleteMany = jest.fn(() => Promise.reject(new Error('bad')));
-    try { await controller.deleteAllDocs(); } catch (e) {
-      expect(e.message).toBe('bad');
-    }
+    await expect(controller.deleteAllDocs()).rejects.toThrow('bad');
   });
   it('makes one book', async () => {
     controller.model.create = jest.fn(() => Promise.resolve(true));
@@ -19,8 +17,6 @@ describe('BookController', () => {
   });
   it('throws error on make one book', async () => {
     controller.model.create = jest.fn(() => Promise.reject(new Error('bad')));
-    try { await controller.createDocs(); } catch (e) {
-      expect(e.message).toBe('bad');
-    }
+    await expect(controller.createDocs()).rejects.toThrow('bad');
   });
 });

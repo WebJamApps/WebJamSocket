@@ -12,6 +12,25 @@ class SocketController {
     this.scServer = scServer;
   }
 
+  routingContinued(socket) {
+    const interval = setInterval(() => {
+      socket.emit('random', { number: Math.floor(Math.random() * 5) });
+    }, 1000);
+    socket.on('disconnect', () => {
+      this.count -= 1;
+      /* istanbul ignore if */
+      if (process.env.NODE_ENV !== 'test') clearInterval(interval);
+      this.scServer.exchange.publish('sample', this.count);
+    });
+    socket.on('getTours', async () => {
+      let allTours;
+      try { allTours = await this.tourController.getAllSort({ datetime: -1 }); } catch (e) {
+        debug(e.message); return socket.emit('error', `${e.message}`);
+      }
+      return socket.emit('allTours', allTours);
+    });
+  }
+
   routing() {
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
@@ -38,22 +57,7 @@ class SocketController {
         debug(`Handled sampleClientEvent: ${data}`);
         this.scServer.exchange.publish('sample', this.count);
       });
-      const interval = setInterval(() => {
-        socket.emit('random', { number: Math.floor(Math.random() * 5) });
-      }, 1000);
-      socket.on('disconnect', () => {
-        this.count -= 1;
-        /* istanbul ignore if */
-        if (process.env.NODE_ENV !== 'test') clearInterval(interval);
-        this.scServer.exchange.publish('sample', this.count);
-      });
-      socket.on('getTours', async () => {
-        let allTours;
-        try { allTours = await this.tourController.getAllSort({ datetime: -1 }); } catch (e) {
-          debug(e.message); return socket.emit('error', `${e.message}`);
-        }
-        return socket.emit('allTours', allTours);
-      });
+      this.routingContinued(socket);
     });
     return Promise.resolve(true);
   }

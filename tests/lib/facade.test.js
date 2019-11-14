@@ -14,6 +14,6 @@ describe('Facade', () => {
       find: () => ({ sort: () => ({ lean: () => ({ exec: () => Promise.reject(new Error('bad')) }) }) }),
     };
     const facade = new Facade(schema);
-    try { await facade.findSort(); } catch (e) { expect(e.message).toBe('bad'); }
+    await expect(facade.findSort()).rejects.toThrow('bad');
   });
 });

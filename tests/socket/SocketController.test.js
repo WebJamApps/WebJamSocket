@@ -1,11 +1,11 @@
 const SocketController = require('../../socket/SocketController');
 
 describe('SocketController', () => {
-  jest.useFakeTimers();
   const clientStub = {
     emit: (name, data) => data,
     on: (name, func) => {
-      func();
+      if (name === 'newTour') return func({ tour: {} });
+      return func();
     },
   };
   const sServer = {
@@ -14,6 +14,9 @@ describe('SocketController', () => {
       func(clientStub);
     },
   };
+  it('is a placeholder', () => {
+    expect(true).toBe(true);
+  });
   it('runs routing', async () => {
     const socketController = new SocketController(sServer);
     socketController.bookController.deleteAllDocs = jest.fn(() => Promise.resolve(true));
@@ -23,7 +26,7 @@ describe('SocketController', () => {
     jest.advanceTimersByTime(2000);
     expect(result).toBe(true);
   });
-  it('runs routingbut has error on getting the tours', async () => {
+  it('runs routing but has error on getting the tours', async () => {
     const socketController = new SocketController(sServer);
     socketController.bookController.deleteAllDocs = jest.fn(() => Promise.resolve(true));
     socketController.tourController.deleteAllDocs = jest.fn(() => Promise.resolve(true));
