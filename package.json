@@ -4,7 +4,7 @@
   "version": "1.0.4",
   "license": "MIT",
   "engines": {
-    "node": ">=13.0.1"
+    "node": ">=13.8.0"
   },
   "contributors": [{
     "name": "Jonathan Gros-Dubois",
@@ -27,8 +27,8 @@
     "sc-uws": "latest",
     "scc-broker-client": "latest",
     "serve-static": "latest",
-    "socketcluster": "latest",
-    "socketcluster-client": "latest",
+    "socketcluster": "14.4.2",
+    "socketcluster-client": "14.3.1",
     "nodemon": "latest"
   },
   "devDependencies": {
