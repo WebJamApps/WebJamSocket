@@ -8,9 +8,7 @@ describe('TourController', () => {
   });
   it('throws error on deletes all tours', async () => {
     controller.model.deleteMany = jest.fn(() => Promise.reject(new Error('bad')));
-    try { await controller.deleteAllDocs(); } catch (e) {
-      expect(e.message).toBe('bad');
-    }
+    await expect(controller.deleteAllDocs()).rejects.toThrow('bad');
   });
   it('gets all tours sorted', async () => {
     controller.model.findSort = jest.fn(() => Promise.resolve(true));
@@ -19,8 +17,6 @@ describe('TourController', () => {
   });
   it('throws error on gets all tours sorted', async () => {
     controller.model.findSort = jest.fn(() => Promise.reject(new Error('bad')));
-    try { await controller.getAllSort(); } catch (e) {
-      expect(e.message).toBe('bad');
-    }
+    await expect(controller.getAllSort()).rejects.toThrow('bad');
   });
 });
